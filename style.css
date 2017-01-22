@@ -1,0 +1,137 @@
+
+@media (max-width: 600px) {
+  body {
+background-color: #ECEDDC;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    padding: 0 !important;
+    //height: 100%;
+  }
+  #calculator {
+    border-radius: 0;
+	  padding: 30px 0 50px 0;
+  }
+
+}
+
+@media (min-width: 600px) {
+  .shadow {
+    border-right: 1px solid #666;
+    border-bottom: 1px solid #666;
+    -moz-box-shadow: 7px 8px 18px 0px rgba(0, 0, 0, 0.6), inset -8px -6px 12px 0.1px #454441;
+    -webkit-box-shadow: 7px 8px 18px 1px rgba(0, 0, 0, 0.6), inset -8px -4px 8px 0.1px #454441;
+    box-shadow: 7px 8px 18px 0px rgba(0, 0, 0, 0.7), inset -8px -6px 12px 1px #454441;
+	}
+  #calculator {
+    border-radius: 15px;
+    background-image: url('http://graffiti.xtgem.com/images/blog/ugly-96977.jpg');
+	  padding: 30px 50px 50px 50px;
+	 // flex: 0 1 500px;
+	  width: 250px;
+  }
+  input {
+    margin-bottom: 30px;
+  }
+  .digit {
+    width: 60px;
+    height: 60px;
+  }
+
+}
+/* ...........END MEDIA......*/
+html {
+	height: 100%;
+}
+body {
+  font-size: 0.7em;
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+  display: flex;
+  justify-content: space-around;
+	align-items: center;
+	height: 100%;
+}
+.container {
+	flex-basis: 300px;
+  //padding-top: 20%;
+
+}
+.top {
+	margin-bottom: 30px;
+}
+#display {
+	width: 80%;
+}
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+.digit {
+  margin: 0.3em;
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+	flex: 0 2 50px;
+	height: 50px;
+  }
+.key .well {
+  margin: 0px 0px;
+}
+
+.key {
+  padding: 0px;
+//  width: 70px;
+}
+#calculator {
+
+  //padding: 30px 50px 50px 50px;
+  text-align: center;
+}
+
+.well {
+ // background-color: rgba(0,0,0,0);
+  border: 0;
+}
+
+.digits .well {
+  text-align: center;
+  cursor: pointer;
+  font-size: 1.8em;
+  border-radius: 5px;
+
+}
+.digits .blue {
+    background-color: #89B6C4;
+      border-right: 1px solid #000;
+  box-shadow: 3px 2px 1px 0px rgba(50, 90, 92, 0.8), inset -60px 0px 20px 0px #56A3B0;
+}
+.digits .grey {
+  background-color: darkgrey;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 1), inset -60px 0px 20px 0px #6E6D69;
+
+}
+.digits .red {
+  background-color: red;
+  box-shadow: 3px 2px 1px 0px rgba(117, 6, 46, 1), inset -60px 0px 20px 0px #A30000;
+}
+.result {
+  text-align: center;
+  font-size: 2em;
+
+}
+input {
+  text-align: right;
+  padding-left: 20px;
+  padding-right: 20px;
+  line-height: 2em;
+  font-size: 2em;
+  background-color: rgba(255,255,255,1);
+  color: black;
+  font-family: 'Orbitron', sans-serif;
+}
+
+#negToggle {
+  letter-spacing: 0.2em;
+}
