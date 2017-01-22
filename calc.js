@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		nodeArray.forEach(function(node) {
 			document.getElementById(node.id).addEventListener('click', function() {
 				processInput(node.value);
-				//buttonShadow();
 			});
 		})
 	};
@@ -64,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Direct input based on value
 	function processInput(value) {
 		input = value;
-			//	console.log('1: input: ' + input);
 		input = (parseInt(input, 10)) ? parseInt(input, 10) : input;
 		keyLog.push(input);
 		if ( (/[-+=*//]/).test(input) ) {
@@ -76,9 +74,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		} else if ( Number.isInteger(input) ||
 					  input === '.' ||
 					  input === '0' ) {
-							console.log('2: numberic input: ' + input);
 			validateNum( input, processNum );
-		} else if ( input = 'negToggle' ) {
+		} else if ( input === 'negToggle' ) {
 			negToggle();
 		} else {
 			console.error('Input Not Permitted');
@@ -91,9 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	//handle displayed text
 	function displayAnswer(str) {
-		console.log('3: ' + str);
-		integerPart = str.toString().split('.')[0];
-		console.log(integerPart);
+		str = str.toString();
+		integerPart = str.split('.')[0];
 		if ( str.length > maxInputLength ) {
 			if ( integerPart.length <= maxInputLength ) {
 				str = str.toFixed(maxInputLength - (integerPart + 1));
@@ -103,11 +99,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				console.error('Input length is too long and string does not validate.');
 			}
 		}
-		console.log('4: ' + str);
 		displayer(str);
 	}
-
-
 
 //start new calculation if a number is pressed directly after '='
 	function validateNum(num, process) {
@@ -117,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 		process(num)
 	}
+
 //All numeric input is added to string.
 	function processNum(num) {
 		currentVal += num;
@@ -125,12 +119,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //Calculate answer after each operation
 	function operate(operator) {
-		console.log('1: currentVal' + currentVal + ' operator: ' + operator);
 		currentVal = eval(inputLog.join('') + currentVal);
-		displayAnswer(currentVal);
+		isFinite(currentVal) ? displayAnswer(currentVal) : displayAnswer('undefined'); //deal with the 'x/0 = infinity' problem
 		inputLog = [];
 		inputLog.push(currentVal);
-		console.log('2: ' + currentVal)
 		if (operator !== '=') {
 			inputLog.push(operator);
 		}
