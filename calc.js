@@ -34,19 +34,18 @@ document.addEventListener('DOMContentLoaded', function() {
 		})
 	};
 
-//g Prevent non-numeric and non-operator. Permit only one decimal.
+//g No non-numeric or non-operator. Permit only one decimal.
 	function stopDefaultAction(evt) {
 		pressed = evt.key;
-		if ( (/[0-9+-=*./]/).test(pressed)
+		if ( !((/[0-9+-=*./]/).test(pressed)
 				 || pressed === 'Delete'
 				 || pressed === 'Backspace'
-			 	 || pressed === 'Enter' ) {
-					 /*	else if (pressed === '.') {
-								 if (/([.])/g).test(currentVal) { evt.preventDefault() };
-						 }*/
-			} else {
-				evt.preventDefault();
+			 	 || pressed === 'Enter') ) {
+					 evt.preventDefault();
 			}
+		/*	if (pressed === '.') {
+					if (/([.])/g).test(currentVal) { evt.preventDefault() };
+			}*/
 	}
 
 // Use 'enter' key to mean '='...
@@ -108,6 +107,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		displayer(str);
 	}
 
+
+
 //start new calculation if a number is pressed directly after '='
 	function validateNum(num, process) {
 		if (keyLog[keyLog.length - 2] === '=') {
@@ -116,7 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 		process(num)
 	}
-
 //All numeric input is added to string.
 	function processNum(num) {
 		currentVal += num;
