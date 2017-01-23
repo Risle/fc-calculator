@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		keyLog = [],
 		integerPart = '',
 		cmd = '',
-		pressed = '';
+		pressed = '',
+		dispFactor = 17;
 
 	FocusOnInput();
 	handle();
@@ -38,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	function stopDefaultAction(evt) {
 		pressed = evt.key.toString();
 		evt.preventDefault();
-
 		validateKey(evt);
 	}
 
@@ -53,10 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			case 'Enter' : cmd = '=';
 				break;
 		}
-		if (cmd === '.') {
-				if ( currentVal.indexOf('.') > -1 ) {
-							return;
-				}
+		if (cmd === '.' && currentVal.indexOf('.') > -1 ) {
+			return;
 		}
 		console.log(cmd);
 		processInput(cmd);
@@ -65,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Direct input based on value
 	function processInput(value) {
 		input = value;
+		fontSizer(input);
 		input = (parseInt(input, 10)) ? parseInt(input, 10) : input;
 		keyLog.push(input);
 		if ( (/[-+=*/]/).test(input) ) {
@@ -80,20 +79,20 @@ document.addEventListener('DOMContentLoaded', function() {
 		}	else if ( input === 'negToggle' ) {
 			negToggle();
 		}
-		return;
+
 	}
 
 	function displayer(val) {
-		var length = val.toString().length;
+		fontSizer(val);
 		display.value = val;
 	}
 
-//start new calculation if a number is pressed directly after '='
+//start new calculation if number is pressed directly after '='
 	function validateNum(num, process) {
 		if (keyLog[keyLog.length - 2] === '=') {
 			inputLog = [];
 			keyLog.pop();
-		}
+		} 
 		process(num)
 	}
 
@@ -133,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				displayer(currentVal);
 				break;
 			default:
-				console.error('\'deleteSomething\' called with incorrect specifications.');
+				console.error('\'deleteSomething\' called with with unknown command.');
 		}
 	}
 
@@ -144,5 +143,18 @@ document.addEventListener('DOMContentLoaded', function() {
 			currentVal = '-' + currentVal;
 		}
 		displayer(currentVal);
+	}
+
+	function fontSizer(txt) {
+		var dispWidth = display.clientWidth;
+		var valLength = txt.toString().length;
+		console.log(dispWidth, valLength);
+		if ( valLength > 12 ) {
+			display.className = 'font-sm';
+			if ( valLength > 16 ) { //(dispWidth / dispFactor ) ) {
+				display.className = 'font-xs';
+			}
+		}
+		console.log(display.className);
 	}
 });

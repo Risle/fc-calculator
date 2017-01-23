@@ -63,7 +63,21 @@ body {
 }
 #display {
 	width: 80%;
+  line-height: 2em;
 }
+
+.font-lg {
+  font-size: 2.5em;
+}
+
+.font-sm {
+  font-size: 2em;
+}
+
+.font-xs {
+  font-size: 1.5em;
+}
+
 .row {
   display: flex;
   flex-flow: row nowrap;
