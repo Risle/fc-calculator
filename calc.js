@@ -11,11 +11,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		display = document.getElementById('display'),
 		keyLog = [],
 		integerPart = '',
-		command = '',
+		cmd = '',
 		pressed = '';
 
 	FocusOnInput();
 	handle();
+
+	console.log(display.clientWidth);
 
 	function FocusOnInput() {
     display.focus();
@@ -23,11 +25,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function handle() {
-		display.addEventListener('keydown', stopDefaultAction);
-		display.addEventListener('keyup', validateKey);
+		display.addEventListener('keydown', stopDefaultAction, false);
 		nodeArray = [].slice.call(keyNodeList);
 		nodeArray.forEach(function(node) {
-			document.getElementById(node.id).addEventListener('click', function() {
+			document.getElementById(node.id).addEventListener('click', function(evt) {
 				processInput(node.value);
 			});
 		})
@@ -35,37 +36,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //g No non-numeric or non-operator. Permit only one decimal.
 	function stopDefaultAction(evt) {
-		pressed = evt.key;
-		if ( !((/[0-9+-=*./]/).test(pressed)
-				 || pressed === 'Delete'
-				 || pressed === 'Backspace'
-			 	 || pressed === 'Enter') ) {
-					 evt.preventDefault();
-			}
-		/*	if (pressed === '.') {
-					if (/([.])/g).test(currentVal) { evt.preventDefault() };
-			}*/
+		pressed = evt.key.toString();
+		evt.preventDefault();
+
+		validateKey(evt);
 	}
 
 // Use 'enter' key to mean '='...
-	function validateKey(keyEvent) {
-		command = keyEvent.key;
-		switch (command) {
-			case 'Delete' : command = 'clear';
+	function validateKey(keyEvt) {
+		cmd = keyEvt.key;
+		switch (cmd) {
+			case 'Delete' : cmd = 'clear';
 				break;
-			case 'Backspace' : command = 'back';
+			case 'Backspace' : cmd = 'back';
 				break;
-			case 'Enter' : command = '=';
+			case 'Enter' : cmd = '=';
 				break;
 		}
-		processInput(command);
+		if (cmd === '.') {
+				if ( currentVal.indexOf('.') > -1 ) {
+							return;
+				}
+		}
+		console.log(cmd);
+		processInput(cmd);
 	}
+
 	// Direct input based on value
 	function processInput(value) {
 		input = value;
 		input = (parseInt(input, 10)) ? parseInt(input, 10) : input;
 		keyLog.push(input);
-		if ( (/[-+=*//]/).test(input) ) {
+		if ( (/[-+=*/]/).test(input) ) {
 				operate(input);
 		} else if (input === 'clear' ||
 					  input === 'clearEntry' ||
@@ -75,31 +77,15 @@ document.addEventListener('DOMContentLoaded', function() {
 					  input === '.' ||
 					  input === '0' ) {
 			validateNum( input, processNum );
-		} else if ( input === 'negToggle' ) {
+		}	else if ( input === 'negToggle' ) {
 			negToggle();
-		} else {
-			console.error('Input Not Permitted');
 		}
+		return;
 	}
 
-	function displayer(str) {
-		display.value = str;
-	}
-
-	//handle displayed text
-	function displayAnswer(str) {
-		str = str.toString();
-		integerPart = str.split('.')[0];
-		if ( str.length > maxInputLength ) {
-			if ( integerPart.length <= maxInputLength ) {
-				str = str.toFixed(maxInputLength - (integerPart + 1));
-			} else if ( integerPart.length > maxInputLength ) { //scientific notation
-				str = integerPart.slice(0, 1) + '.' + integerPart.slice(1, 3) + 'e' + integerPart.length;
-			} else {
-				console.error('Input length is too long and string does not validate.');
-			}
-		}
-		displayer(str);
+	function displayer(val) {
+		var length = val.toString().length;
+		display.value = val;
 	}
 
 //start new calculation if a number is pressed directly after '='
@@ -111,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		process(num)
 	}
 
-//All numeric input is added to string.
+//Add numeric input to a string
 	function processNum(num) {
 		currentVal += num;
 		displayer(currentVal);
@@ -120,7 +106,8 @@ document.addEventListener('DOMContentLoaded', function() {
 //Calculate answer after each operation
 	function operate(operator) {
 		currentVal = eval(inputLog.join('') + currentVal);
-		isFinite(currentVal) ? displayAnswer(currentVal) : displayAnswer('undefined'); //deal with the 'x/0 = infinity' problem
+		isFinite(currentVal) ? displayer(currentVal) : displayer('undefined') ; //deal with the 'x/0 = infinity' problem
+		console.log(currentVal);
 		inputLog = [];
 		inputLog.push(currentVal);
 		if (operator !== '=') {
@@ -146,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				displayer(currentVal);
 				break;
 			default:
-				console.error('delete function called with incorrect specifications.');
+				console.error('\'deleteSomething\' called with incorrect specifications.');
 		}
 	}
 
